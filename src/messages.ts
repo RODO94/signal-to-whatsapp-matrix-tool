@@ -93,7 +93,7 @@ const handleMessage = async (event) => {
   }
 
   //if message has the tool's wake word, say hello
-  if (message.includes("example")) {
+  if (message.includes("rory-example")) {
     hello(room_id);
     return;
   }

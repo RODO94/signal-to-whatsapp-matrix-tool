@@ -3,8 +3,13 @@ import * as sdk from "matrix-js-sdk";
 import { RoomEvent, ClientEvent } from "matrix-js-sdk";
 import handleMessage from "./messages";
 import handleReaction from "./reactions";
+import {
+  checkForTrigger,
+  handleSignalTrigger,
+} from "./modules/signalTrigger/signalTrigger";
 
-const { homeserver, access_token, userId, whatsAppRoomId } = process.env;
+const { homeserver, access_token, userId, whatsAppRoomId, signalRoomId } =
+  process.env;
 
 const client = sdk.createClient({
   baseUrl: homeserver,
@@ -35,7 +40,10 @@ const start = async () => {
         return; // don't reply to messages sent by the tool
       }
 
-      if (event.event.room_id !== whatsAppRoomId) {
+      if (
+        event.event.room_id !== whatsAppRoomId &&
+        event.event.room_id !== signalRoomId
+      ) {
         return; // don't activate unless in the active room
       }
 
@@ -46,6 +54,12 @@ const start = async () => {
         console.log("skipping event:", event);
         return; // only use messages or reactions
       }
+
+      if (
+        event.getType() === "m.room.message" &&
+        checkForTrigger(event.event.content.body)
+      )
+        handleSignalTrigger(event);
 
       if (event.getType() === "m.room.message") handleMessage(event);
 
