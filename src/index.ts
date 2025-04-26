@@ -44,6 +44,8 @@ const start = async () => {
       //   return; // don't reply to messages sent by the tool
       // }
 
+      checkforTriggers(event);
+
       if (
         event.event.room_id !== whatsAppRoomId &&
         event.event.room_id !== signalRoomId
@@ -59,23 +61,25 @@ const start = async () => {
         return; // only use messages or reactions
       }
 
-      if (
-        event.getType() === "m.room.message" &&
-        checkForSignalTrigger(event.event.content.body)
-      )
-        handleSignalTrigger(event);
-
-      if (
-        event.getType() === "m.room.message" &&
-        checkForWhatsAppTrigger(event.event.content.body)
-      )
-        handleWhatsAppTrigger(event);
-
       if (event.getType() === "m.room.message") handleMessage(event);
 
       if (event.getType() === "m.reaction") handleReaction(event);
     }
   );
+};
+
+const checkforTriggers = (event: sdk.MatrixEvent) => {
+  if (
+    event.getType() === "m.room.message" &&
+    checkForSignalTrigger(event.event.content.body)
+  )
+    handleSignalTrigger(event);
+
+  if (
+    event.getType() === "m.room.message" &&
+    checkForWhatsAppTrigger(event.event.content.body)
+  )
+    handleWhatsAppTrigger(event);
 };
 
 start();

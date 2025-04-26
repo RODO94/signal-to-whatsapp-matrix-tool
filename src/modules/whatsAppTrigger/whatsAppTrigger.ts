@@ -11,7 +11,7 @@ export const checkForWhatsAppTrigger = (message: string) => {
 export const handleWhatsAppTrigger = async (event: sdk.MatrixEvent) => {
   const roomId = event.getRoomId();
   const message = event.getContent().body;
-  const signalRoomId = message.split("--")[1] || message;
+  const signalRoomId = message.split("--")[2] || message;
   sendMessage(
     roomId,
     `The WhatsApp roomId is: '${signalRoomId}'. I will store and use this to connect the chat`
