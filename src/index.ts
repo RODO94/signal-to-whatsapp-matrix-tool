@@ -11,6 +11,7 @@ import {
   checkForWhatsAppTrigger,
   handleWhatsAppTrigger,
 } from "./modules/whatsAppTrigger/whatsAppTrigger";
+import { compareLinkedRoomIds } from "./modules/messageHandler/messageHandler";
 
 const { homeserver, access_token, userId, whatsAppRoomId, signalRoomId } =
   process.env;
@@ -46,10 +47,7 @@ const start = async () => {
 
       checkforTriggers(event);
 
-      if (
-        event.event.room_id !== whatsAppRoomId &&
-        event.event.room_id !== signalRoomId
-      ) {
+      if (!compareLinkedRoomIds(event.getRoomId())) {
         return; // don't activate unless in the active room
       }
 
