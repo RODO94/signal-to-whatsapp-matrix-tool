@@ -17,7 +17,7 @@ export const handleWhatsAppTrigger = async (event: sdk.MatrixEvent) => {
   matchGroupId(roomId, signalRoomId);
   sendMessage(
     roomId,
-    `We are not  '${signalRoomId}'. I will store and use this to connect the chat`
+    `Connecting current WhatsApp group with Signal group with id '${signalRoomId}'.`
   );
 };
 

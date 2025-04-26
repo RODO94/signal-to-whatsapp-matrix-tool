@@ -13,9 +13,11 @@ export const checkForSignalTrigger = (message: string) => {
 export const handleSignalTrigger = async (event: sdk.MatrixEvent) => {
   const roomId = event.getRoomId();
   writeGroupId(roomId);
-  sendMessage(roomId, `The Signal roomId is:`);
-  sendMessage(roomId, roomId);
-  sendMessage(roomId, "Use this in the WhatsApp group you want to link");
+  sendMessage(
+    roomId,
+    `Trigger request received. Paste the following to connect this Signal group to a WhatsApp group:`
+  );
+  sendMessage(roomId, `triggerLink --signal --${roomId}`);
 };
 
 export const writeGroupId = (roomId) => {

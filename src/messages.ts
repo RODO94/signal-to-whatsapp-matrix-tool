@@ -2,8 +2,6 @@ import { v4 as uuidv4 } from "uuid";
 import { sendMessage, getEvent } from "./matrixClientRequests";
 import { PERSON_NAME, ROLE_NAME, PSEUDO_STATE_EVENT_TYPE } from "./constants";
 import { getPseudoState, setPseudoState } from "./pseudoState";
-import * as fs from "fs";
-import * as path from "path";
 
 const { userId } = process.env;
 
