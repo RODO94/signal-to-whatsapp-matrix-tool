@@ -14,6 +14,7 @@ export const handleWhatsAppTrigger = async (event: sdk.MatrixEvent) => {
   const roomId = event.getRoomId();
   const message = event.getContent().body;
   const signalRoomId = message.split("--")[2] || message;
+  matchGroupId(roomId, signalRoomId);
   sendMessage(
     roomId,
     `We are not  '${signalRoomId}'. I will store and use this to connect the chat`
@@ -26,7 +27,7 @@ export const matchGroupId = (whatsAppRoomId, signalRoomId) => {
     const jsonData = fs.readFileSync(filePath, "utf-8");
     const data = JSON.parse(jsonData);
     const newData = data.map((groupIds) => {
-      if (groupIds.contains(signalRoomId) && groupIds[0] == "xx") {
+      if (groupIds.includes(signalRoomId) && groupIds[0] == "xx") {
         return [whatsAppRoomId, signalRoomId];
       }
       return groupIds;
