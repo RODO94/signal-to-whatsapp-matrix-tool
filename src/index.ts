@@ -40,9 +40,9 @@ const start = async () => {
         return; //don't run commands for old messages
       }
 
-      // if (event.event.sender === userId) {
-      //   return; // don't reply to messages sent by the tool
-      // }
+      if (event.event.sender === userId) {
+        return; // don't reply to messages sent by the tool
+      }
 
       checkforTriggers(event);
 
