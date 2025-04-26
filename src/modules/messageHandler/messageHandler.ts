@@ -3,7 +3,7 @@ import "dotenv/config";
 
 export const readDataFromJson = () => {
   try {
-    const json = fs.readFileSync("./src/data/roomIds.json", "utf8");
+    const json = fs.readFileSync("./group_ids.json", "utf8");
     const result: Array<string[]> = JSON.parse(json);
     return result;
   } catch (err) {
