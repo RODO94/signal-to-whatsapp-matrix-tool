@@ -4,9 +4,13 @@ import { RoomEvent, ClientEvent } from "matrix-js-sdk";
 import handleMessage from "./messages";
 import handleReaction from "./reactions";
 import {
-  checkForTrigger,
+  checkForSignalTrigger,
   handleSignalTrigger,
 } from "./modules/signalTrigger/signalTrigger";
+import {
+  checkForWhatsAppTrigger,
+  handleWhatsAppTrigger,
+} from "./modules/whatsAppTrigger/whatsAppTrigger";
 
 const { homeserver, access_token, userId, whatsAppRoomId, signalRoomId } =
   process.env;
@@ -57,9 +61,15 @@ const start = async () => {
 
       if (
         event.getType() === "m.room.message" &&
-        checkForTrigger(event.event.content.body)
+        checkForSignalTrigger(event.event.content.body)
       )
         handleSignalTrigger(event);
+
+      if (
+        event.getType() === "m.room.message" &&
+        checkForWhatsAppTrigger(event.event.content.body)
+      )
+        handleWhatsAppTrigger(event);
 
       if (event.getType() === "m.room.message") handleMessage(event);
 

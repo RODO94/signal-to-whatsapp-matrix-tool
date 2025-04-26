@@ -3,7 +3,7 @@ import { sendMessage } from "../../matrixClientRequests";
 
 export const signalTrigger = "triggerLink --whatsApp";
 
-export const checkForTrigger = (message: string) => {
+export const checkForSignalTrigger = (message: string) => {
   if (message.includes(signalTrigger)) return true;
   return false;
 };
