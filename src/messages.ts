@@ -97,11 +97,6 @@ const handleMessage = async (event) => {
   //if message has the tool's wake word, say hello
   if (message === "rory-example") {
     hello(room_id);
-    console.log("dirname is ", __dirname);
-    const filePath = path.join(__dirname.split("dist")[0], "group_ids.json");
-    const jsonData = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(jsonData);
-    console.log({ data });
     return;
   }
 };
