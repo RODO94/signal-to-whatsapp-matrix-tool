@@ -11,7 +11,10 @@ import {
   checkForWhatsAppTrigger,
   handleWhatsAppTrigger,
 } from "./modules/whatsAppTrigger/whatsAppTrigger";
-import { compareLinkedRoomIds } from "./modules/messageHandler/messageHandler";
+import {
+  compareLinkedRoomIds,
+  retrieveLinkedRoomId,
+} from "./modules/messageHandler/messageHandler";
 
 const { homeserver, access_token, userId, whatsAppRoomId, signalRoomId } =
   process.env;
@@ -51,6 +54,8 @@ const start = async () => {
         return; // don't activate unless in the active room
       }
 
+      const linkedId = retrieveLinkedRoomId(event.getRoomId());
+
       if (
         event.getType() !== "m.room.message" &&
         event.getType() !== "m.reaction"
@@ -59,7 +64,7 @@ const start = async () => {
         return; // only use messages or reactions
       }
 
-      if (event.getType() === "m.room.message") handleMessage(event);
+      if (event.getType() === "m.room.message") handleMessage(event, linkedId);
 
       if (event.getType() === "m.reaction") handleReaction(event);
     }

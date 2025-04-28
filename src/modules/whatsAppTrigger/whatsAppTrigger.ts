@@ -14,14 +14,15 @@ export const handleWhatsAppTrigger = async (event: sdk.MatrixEvent) => {
   const roomId = event.getRoomId();
   const message = event.getContent().body;
   const signalRoomId = message.split("--")[2] || message;
-  matchGroupId(roomId, signalRoomId);
+  console.log(signalRoomId);
+  addWhatsAppRoomId(roomId, signalRoomId);
   sendMessage(
     roomId,
     `Connecting current WhatsApp group with Signal group with id '${signalRoomId}'.`
   );
 };
 
-export const matchGroupId = (whatsAppRoomId, signalRoomId) => {
+export const addWhatsAppRoomId = (whatsAppRoomId, signalRoomId) => {
   try {
     const filePath = path.join(__dirname.split("dist")[0], "group_ids.json");
     const jsonData = fs.readFileSync(filePath, "utf-8");

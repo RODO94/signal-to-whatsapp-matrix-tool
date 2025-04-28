@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import { sendMessage, getEvent } from "./matrixClientRequests";
 import { PERSON_NAME, ROLE_NAME, PSEUDO_STATE_EVENT_TYPE } from "./constants";
 import { getPseudoState, setPseudoState } from "./pseudoState";
+import * as sdk from "matrix-js-sdk";
 
 const { userId } = process.env;
 
@@ -82,9 +83,15 @@ const handleReply = async (event) => {
   }
 };
 
-const handleMessage = async (event) => {
+const handleMessage = async (event: sdk.MatrixEvent, roomId) => {
   const message = event.event.content.body.toLowerCase();
-  const { room_id } = event.event;
+  console.log("WITHIN HANDLEMESSAGE FN", roomId);
+  if (roomId) {
+    return sendMessage(
+      roomId,
+      `From: ${event.sender.name}... ${event.event.content.body}`
+    );
+  }
 
   //if message is a reply, handle reply
   if (event.event.content["m.relates_to"]) {
@@ -94,7 +101,6 @@ const handleMessage = async (event) => {
 
   //if message has the tool's wake word, say hello
   if (message === "rory-example") {
-    hello(room_id);
     return;
   }
 };
